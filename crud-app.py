@@ -28,10 +28,8 @@ try:
         sh = gc.open(SHEET_INPUT)
     worksheet = sh.worksheet(WORKSHEET_NAME)
 except Exception as e:
-    # 直接從 secrets 取得 email，避免呼叫不存在的 gc.auth
-    email = st.secrets["gcp_service_account"]["client_email"]
     st.error(
-        f"無法開啟試算表，請確認名稱/網址是否正確，且服務帳號 ({email}) 已被加入共用編輯者！\n錯誤訊息：{e}")
+        f"無法開啟試算表，請確認名稱/網址是否正確，且服務帳號 ({gc.auth.signer_email}) 已被加入共用編輯者！\n錯誤訊息：{e}")
     st.stop()
 
 st.title("📊 Google Sheets 讀寫測試儀表板")
@@ -131,3 +129,4 @@ if data:
                 worksheet.delete_rows(selected_row_del)
             st.success("資料已成功刪除！")
             st.rerun()
+
